@@ -4,7 +4,7 @@
 #include <string>  
 #include <WS2tcpip.h>
 #include <functional>
-#include "threadpool/ThreadPool.h"
+#include "threadpool/headers/ThreadPool.h"
 #include "headeronly/SimpleLogger.h"
 
 struct Config {

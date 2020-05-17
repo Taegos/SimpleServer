@@ -2,6 +2,7 @@
 #include <string>  
 #include <functional>
 #include <WS2tcpip.h>
+#include <iostream>
 
 struct WinSockException : public std::exception
 {
@@ -9,28 +10,29 @@ public:
 
     WinSockException(const std::string& msg) : msg{ msg }
     {
-        std::cout << description() << std::endl;
+        std::cout << descFull() << std::endl;
         WSACleanup();
     }
 
     const char* what() const throw ()
     {
-        return descriptionShort().c_str();
+        return descShort().c_str();
     }
 
 private:
-    std::string descriptionShort() const {
-        return msg + " Err #" + std::to_string(WSAGetLastError());
+
+    std::string descShort() const {
+        return msg + " ERR #" + std::to_string(WSAGetLastError());
     }
 
-    std::string description() const {
+    std::string descFull() const {
         std::string d;
-        d += "WinSock error";
-        d += "\n";
-        d += "\n    Message: " + msg;
+        d += "WinSockException thrown";
+        d += '\n';
+        d += "\n    Reason: " + msg;
         d += "\n    Error Code: " + std::to_string(WSAGetLastError());
-        d += "\n";
-        d += "\nSee https://docs.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2";
+        d += '\n';
+        d += "\nSee: https://docs.microsoft.com/en-us/windows/win32/winsock/windows-sockets-error-codes-2";
         d += "\nfor error code reference.";
         return d;
     }

@@ -31,7 +31,7 @@ inline void SimpleLogger::out(std::wstring str) const {
 template<>
 inline void SimpleLogger::out(float f) const {
     if (!enabled) return;
-    std::cout<< f;
+    std::cout << f;
 }
 
 
