@@ -1,7 +1,6 @@
 #include <thread>
 #include "SimpleServer.h"
-#include "headeronly/SimpleNetworkExceptions.h"
-#include "headeronly/SimpleLogger.h"
+#include "SimpleNetworkExceptions.h"
 
 #pragma comment (lib, "ws2_32.lib")
 
@@ -43,26 +42,28 @@ void SimpleServer::executeSession(SOCKET connection)
 {
     char buf[4096];
 
+    logpeer(connection, "connected");
     while (true) {
 
         memset(buf, 0, 4096);
         int len = recv(connection, buf, 4096, 0);
 
-        if (len == 0 || buf[0] == '\0') { //disconnected
+        if (len == 0) {
             break;
         }
         if (len == SOCKET_ERROR) {
-            break;
+            logger.outnl("ERR");
         }
 
         std::string response = packetHandler(buf);
 
         int status = send(connection, response.c_str(), response.size() + 1, 0);
         if (status == SOCKET_ERROR) {
-            logsock(connection, "failed to send data");
+            logpeer(connection, "failed to send data");
         }
     }
 
+    logpeer(connection, "disconnected");
     closesocket(connection);
 }
 
@@ -133,8 +134,8 @@ std::tuple<std::string, std::string> SimpleServer::getPeerInfo(SOCKET socket)
 }
 
 
-void SimpleServer::logsock(SOCKET socket, const std::string& msg)
+void SimpleServer::logpeer(SOCKET peer, const std::string& msg)
 {
-    const auto [host, port] = getSocketInfo(socket);
+    const auto [host, port] = getPeerInfo(peer);
     logger.outnl("[", host, ":", port, "] ", msg);
 }

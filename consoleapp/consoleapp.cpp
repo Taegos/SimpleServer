@@ -1,4 +1,5 @@
 #include "SimpleServer.h"
+using namespace std;
 
 int main()
 {
@@ -9,10 +10,14 @@ int main()
     config.winSockVersion = { 2,2 };
     config.loggingEnabled = true;
 
-    SimpleServer::PacketHandlerFn fn = [](auto packet) { return ""; };
+    SimpleServer::PacketHandlerFn fn = [](const string& packet) { 
+        cout << packet << endl;
+        if (packet == "ping") return "pong";
+        return packet.c_str(); 
+    };
 
     SimpleServer server{ config, fn};
-
     server.run();
+
     return 0;
 }

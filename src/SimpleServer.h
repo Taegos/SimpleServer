@@ -4,8 +4,8 @@
 #include <string>  
 #include <WS2tcpip.h>
 #include <functional>
-#include "threadpool/headers/ThreadPool.h"
-#include "headeronly/SimpleLogger.h"
+#include "ThreadPool.h"
+#include "SimpleLogger.h"
 
 struct Config {
     std::string host = "127.0.0.1";
@@ -35,5 +35,5 @@ private:
     SOCKET waitForConnection(SOCKET);
     std::tuple<std::string, std::string> getSocketInfo(SOCKET);
     std::tuple<std::string, std::string> getPeerInfo(SOCKET);
-    void logsock(SOCKET, const std::string&);
+    void logpeer(SOCKET, const std::string&);
 };

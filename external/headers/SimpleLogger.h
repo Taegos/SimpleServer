@@ -34,7 +34,6 @@ inline void SimpleLogger::out(float f) const {
     std::cout << f;
 }
 
-
 template<typename T>
 void SimpleLogger::out(T t) const {
     if (!enabled) return;
